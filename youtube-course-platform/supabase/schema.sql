@@ -155,3 +155,22 @@ create policy "Users manage their own notes"
 
 create policy "Users manage their own bookmarks"
   on bookmarks for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- ---------------------------------------------------------------------------
+-- 7. Manual completions — log of "Mark as complete" clicks, used to rate-limit
+--    the feature to 5 uses per rolling 5-hour window per user.
+-- ---------------------------------------------------------------------------
+create table if not exists manual_completions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users (id) on delete cascade,
+  lesson_id uuid not null references lessons (id) on delete cascade,
+  created_at timestamptz default now()
+);
+
+create index if not exists manual_completions_user_time_idx
+  on manual_completions (user_id, created_at);
+
+alter table manual_completions enable row level security;
+
+create policy "Users manage their own manual completions"
+  on manual_completions for all using (auth.uid() = user_id) with check (auth.uid() = user_id);

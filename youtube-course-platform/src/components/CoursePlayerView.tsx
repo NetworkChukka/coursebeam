@@ -7,6 +7,7 @@ import { VideoPlayer } from './VideoPlayer';
 import { NotesPanel } from './NotesPanel';
 import { BookmarksPanel } from './BookmarksPanel';
 import { ProgressBar } from './ProgressBar';
+import { MarkCompleteButton } from './MarkCompleteButton';
 import { useYouTubePlayer } from '@/hooks/useYouTubePlayer';
 import { useProgressTracking } from '@/hooks/useProgressTracking';
 import { usePlayerStore } from '@/store/usePlayerStore';
@@ -143,7 +144,16 @@ export function CoursePlayerView({
             onNext={() => currentIndex < lessons.length - 1 && setActiveLesson(lessons[currentIndex + 1])}
           />
           <div>
-            <h2 className="font-display text-sm font-medium text-ink">{activeLesson.title}</h2>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h2 className="font-display text-sm font-medium text-ink">{activeLesson.title}</h2>
+              <MarkCompleteButton
+                lesson={activeLesson}
+                lessons={lessons}
+                courseId={course.id}
+                userId={userId}
+                onMarkedComplete={markCompletedLocally}
+              />
+            </div>
             {activeLesson.description && (
               <p className="mt-1 line-clamp-3 whitespace-pre-line text-xs text-ink-muted">{activeLesson.description}</p>
             )}
