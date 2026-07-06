@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html.light {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-bg font-body text-ink transition-colors;
+}
+
+html.light body {
+  @apply bg-bg-light text-ink-light;
+}
+
+::selection {
+  background-color: theme('colors.teal.DEFAULT');
+  color: theme('colors.bg.DEFAULT');
+}
+
+/* Slim scrollbars for the lesson sidebar */
+.thin-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: theme('colors.border.DEFAULT');
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
